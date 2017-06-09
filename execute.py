@@ -259,8 +259,8 @@ def decode():
     model.batch_size = 1  # We decode one sentence at a time.
 
     # Load vocabularies.
-    enc_vocab_path = os.path.join(FLAGS.working_directory,"vocab%d.enc" % FLAGS.enc_vocab_size)
-    dec_vocab_path = os.path.join(FLAGS.working_directory,"vocab%d.dec" % FLAGS.dec_vocab_size)
+    enc_vocab_path = os.path.join(FLAGS.working_directory,"vocab%d.from" % FLAGS.enc_vocab_size)
+    dec_vocab_path = os.path.join(FLAGS.working_directory,"vocab%d.to" % FLAGS.dec_vocab_size)
 
     enc_vocab, _ = data_utils.initialize_vocabulary(enc_vocab_path)
     _, rev_dec_vocab = data_utils.initialize_vocabulary(dec_vocab_path)
