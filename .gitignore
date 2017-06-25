@@ -1,5 +1,5 @@
+*.pyc
+checkpoint
 *.index
 *.meta
 *.data-00000-of-00001
-checkpoint
-data_utils.pyc seq2seq_model.pyc
