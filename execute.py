@@ -30,6 +30,8 @@ import tensorflow as tf
 import data_utils
 import seq2seq_model
 
+import jieba
+
 # python2 and python3 support
 try:
     reload
@@ -247,7 +249,7 @@ def train():
         sys.stdout.flush()
 
 
-def decode():
+def decode(cn_flag):
 
   # Only allocate part of the gpu memory when predicting.
   # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
@@ -269,6 +271,17 @@ def decode():
     sys.stdout.write("> ")
     sys.stdout.flush()
     sentence = sys.stdin.readline()
+
+    def word_segment(line):
+      line = line.strip()
+      seg_list = jieba.cut(sentence)
+      segments = ""
+      for str in seg_list:
+        segments = segments + " " + str
+      return segments
+
+    if cn_flag == True:
+      sentence = word_segment(sentence)
     while sentence:
       # Get token-ids for the input sentence.
       token_ids = data_utils.sentence_to_token_ids(tf.compat.as_bytes(sentence), enc_vocab)
@@ -296,6 +309,8 @@ def decode():
       print("> ", end="")
       sys.stdout.flush()
       sentence = sys.stdin.readline()
+      if cn_flag == True:
+        sentence = word_segment(sentence)
 
 
 def self_test():
@@ -377,7 +392,10 @@ if __name__ == '__main__':
         train()
     elif FLAGS.mode == 'test':
         # interactive decode
-        decode()
+        decode(False)
+    elif FLAGS.mode == 'test_cn':
+        # interactive decode
+        decode(True)
     else:
         # wrong way to execute "serve"
         #   Use : >> python ui/app.py
